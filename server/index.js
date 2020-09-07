@@ -1,25 +1,23 @@
+const dotenv = require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
-
-const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
-const url = 'mongodb://localhost:27017';
+const mongoUrl = 'mongodb://localhost:27017';
+const Mongo = require('mongodb').MongoClient;
+const mongoClient = new Mongo(mongoUrl);
+const dbName = 'raid-cd-planner-dev';
 
-// Database Name
-const dbName = 'myproject';
+const blizzard = require('./blizzard_api/blizzardBaseApi.js')
 
-// Create a new MongoClient
-const client = new MongoClient(url);
-
-client.connect(function(err) {
+mongoClient.connect(function(err) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
 
-  const db = client.db(dbName);
+  const db = mongoClient.db(dbName);
 
-  client.close();
+  mongoClient.close();
 });
 
 const app = express();
