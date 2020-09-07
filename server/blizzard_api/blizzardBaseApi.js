@@ -16,12 +16,10 @@ class BlizzardBase {
 
   retrieveToken(){
     this.client.getApplicationToken().then(response => {
-      client.defaults.token = response.data.access_token 
+      client.defaults.token = response.data.access_token
     });
   }
 }
 
 const api = new BlizzardBase
-
-
 module.exports = { api } 
