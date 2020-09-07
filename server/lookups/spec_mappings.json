@@ -1,0 +1,18 @@
+{
+  "tanks": ["guardian", "protection", "brewmaster", "blood"],
+  "dps": [
+    "arms", "fury", 
+    "windwalker", 
+    "feral", "balance", 
+    "elemental", "enhancement", 
+    "retribution", 
+    "arcane", "fire", "frost", 
+    "destruction", "demonology", "affliction", 
+    "survival", "beast mastery", "marksmanship",
+    "shadow",
+    "assassination", "subtlety", "combat",
+    "frost", "unholy",
+    "havoc"
+  ],
+  "healers": ["mistweaver", "restoration", "holy", "discipline"]
+}

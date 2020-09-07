@@ -22,16 +22,17 @@ class SeedClasses {
     });
   }
 
-  seedClasses(){
-    this.retrieveClasses(classes =>{
-      classes.forEach(set =>{
+  seedClasses(next){
+    this.retrieveClasses(classes => {
+      classes.forEach(set => {
         PC.exists({name: set.name, player_class_id: set.id}, (err, result) =>{
           if (err){
-            console.log(err)
+            if (err) return console.log(err)
           } else if(!result) {
             let playerClass = new PC({ name: set.name, player_class_id: set.id });
             playerClass.save((err, pc)=>{
               if (err) return console.log(err)
+              if(next){next(pc)}                
             })
           } else {
             console.log(`Skipped seeding: ${set.name}`)
@@ -45,7 +46,4 @@ class SeedClasses {
 }
 
 const classSeed = new SeedClasses
-PC.find({name: "Warrior"}).then((result)=>{
-  console.log(result)
-})
 module.exports = { classSeed }
