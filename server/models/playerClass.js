@@ -8,7 +8,8 @@ var PlayerClassSchema = new mongoose.Schema({
   player_class_id: {
     type: Number,
     index: true
-  }
+  },
+  roles: Array
 });
 
 var playerClass = mongoose.model('PlayerClass', PlayerClassSchema);
