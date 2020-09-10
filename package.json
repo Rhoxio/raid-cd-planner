@@ -11,6 +11,8 @@
     "cheerio": "^1.0.0-rc.3",
     "mongodb": "^3.6.1",
     "mongoose": "^5.10.3",
+    "phantomjs": "^2.1.7",
+    "puppeteer": "^5.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
