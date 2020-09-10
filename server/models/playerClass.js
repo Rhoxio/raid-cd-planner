@@ -1,4 +1,6 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const ClassSpecialization = require("./classSpecialization.js").classSpecialization
 
 var PlayerClassSchema = new mongoose.Schema({
   name: {
@@ -9,7 +11,8 @@ var PlayerClassSchema = new mongoose.Schema({
     type: Number,
     index: true
   },
-  roles: Array
+  roles: Array,
+  specs: [{ type: Schema.Types.ObjectId, ref: 'ClassSpecialization' }] 
 });
 
 var playerClass = mongoose.model('PlayerClass', PlayerClassSchema);

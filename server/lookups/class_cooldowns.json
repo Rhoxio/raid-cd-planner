@@ -1,0 +1,27 @@
+{
+  "aoe":{
+    "defensive":["Anti-Magic Zone", "Aura Mastery", "Power Word: Barrier", "Spirit Link Totem", "Rallying Cry", "Darkness", "Aegis of Light", "Aura of Sacrifice", "Luminous Barrier", "Earthen Wall Totem", "Demoralizing Shout"],
+    "healing": ["Tranquility", "Revival", "Divine Hymn", "Halo", "Divine Star", "Vampiric Embrace", "Spirit Shell", "Divine Hymn", "Healing Tide Totem", "Ancestral Guidance", "Cloudburst Totem", "Aura of Mercy", "Holy Word: Salvation", "Healing Stream Totem"],
+    "immunity": [],
+    "mobility": ["Stampeding Roar", "Wind Rush Totem", "Demonic Gateway"],
+    "cheat_death": [],
+    "buff": ["Heroism", "Bloodlust"]
+  },
+  "external":{
+    "defensive": ["Ironbark", "Roar of Sacrifice", "Life Cocoon", "Blessing of Sacrifice", "Pain Suppression", "Intervene", "Safeguard"],
+    "healing": ["Lay on Hands", "Gift of the Naaru"],
+    "immunity": ["Blessing of Protection", "Blessing of Spellwarding"],
+    "mobility": ["Tiger's Lust", "Blessing of Freedom", "Angelic Feather", ""],
+    "cheat_death": ["Guardian Spirit", "Ancestral Protection Totem"],
+    "buff": []
+  },
+  "personal":{
+    "defensive": ["Icebound Fortitude", "Anti-Magic Shell", "Dancing Rune Weapon", "Vampiric Blood", "Barkskin", "Survival Instincts", "Bristling Fur", "Netherwalk", "Evasion", "Riposte", "Die by the Sword", "Rune Tap", "Tombstone", "Blur", "Desperate Instincts", "Fiery Brand", "Brambles", "Survival of the Fittest", "Survival Instincts", "Ironfur", "Blazing Barrier", "Ice Barrier", "Greater Invisibility", "Prismatic Barrier", "Dampen Harm", "Diffuse Magic", "Fortifying Brew", "Guard", "Ironskin Brew", "Stagger", "Touch of Karma", "Guardian of Ancient Kings", "Dispersion", "Feint", "Astral Shift", "Harden Skin", "Ignore Pain" ],
+    "healing": ["Exhilaration",  "Frenzied Regeneration", "Light of the Protector", "Desperate Prayer", "Crimson Vial", "Nature's Guardian", "Enraged Regeneration"],
+    "immunity": ["Aspect of the Turtle", "Ice Block", "Divine Shield", "Cloak of Shadows", "Berserker Rage", "Unending Resolve", "Bladestorm"],
+    "mobility":["Death's Advance"],
+    "cheat_death": ["Purgatory", "Last Resort", "Ardent Defender", "Cheat Death"],
+    "buff":["Seraphim"]
+  }
+  
+}

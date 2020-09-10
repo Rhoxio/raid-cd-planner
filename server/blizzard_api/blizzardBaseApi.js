@@ -10,11 +10,7 @@ class BlizzardBase {
     this.test = () => {console.log("OK!")}
   }
 
-  client(){
-    return this.client;
-  }
-
-  retrieveToken(){
+  refreshToken(){
     this.client.getApplicationToken().then(response => {
       client.defaults.token = response.data.access_token
     });

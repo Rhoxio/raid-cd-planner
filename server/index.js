@@ -4,9 +4,32 @@ const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const assert = require('assert');
 
+const mongoose = require('mongoose');
+const db = mongoose.connection;
+mongoose.connect('mongodb://localhost/raid-cd-planner-dev-5', {useNewUrlParser: true});
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() { console.log("Connected to Mongo!") });
+
+const axios = require('axios');
+const blizzard = require('./blizzard_api/blizzardBaseApi.js')
+
+const PC = require("./models/playerClass.js").playerClass
+const CS = require("./models/classSpecialization.js").classSpecialization
+const spellSeeder = require('./seeders/seedSpells.js').seeder
+
+spellSeeder.scrapeWowhead()
+
+
 // const blizzard = require('./blizzard_api/blizzardBaseApi.js')
-const characterSeeder = require('./seeders/seedClasses.js') 
-console.log(characterSeeder.classSeed.seedClassDistinctions())
+// const characterSeeder = require('./seeders/seedClasses.js')
+// console.log(characterSeeder.classSeed.seedClasses())
+// console.log(characterSeeder.classSeed.seedClassDistinctions())
+// console.log(characterSeeder.classSeed.seedClassSpecializations())
+// console.log(characterSeeder.classSeed.seedAll())
+
+// PC.find().populate('specs').exec((err, models)=>{
+//   console.log(models[0].specs[0])
+// })
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));

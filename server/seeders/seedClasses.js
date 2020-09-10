@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
-const db = mongoose.connection;
 const fs = require('fs');
 const path = require('path')
-
-mongoose.connect('mongodb://localhost/raid-cd-planner-dev', {useNewUrlParser: true});
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("Connected to Mongo!")
-});
-
 const axios = require('axios');
 const blizzard = require('../blizzard_api/blizzardBaseApi.js')
 const PC = require("../models/playerClass.js").playerClass
+const CS = require("../models/classSpecialization.js").classSpecialization
 
 class ClassesSeeder { 
+
+  seedAll(){
+    this.seedClasses()
+    this.seedClassDistinctions()
+    this.seedClassSpecializations()
+    this.associateClassesToSpecs()
+  }
+
   retrieveClasses(next){
     let client = blizzard.api.client
     client.getApplicationToken().then(response => {
@@ -46,7 +46,7 @@ class ClassesSeeder {
     })
   }
 
-  seedClassDistinctions(){
+  seedClassDistinctions(next){
     let client = blizzard.api.client
     let specLookup = JSON.parse(fs.readFileSync(path.join(__dirname, '../lookups/spec_mappings.json')));
     client.getApplicationToken().then(response => {
@@ -68,16 +68,70 @@ class ClassesSeeder {
                 if (err) return console.log(err) 
                 console.log(`Added role info to: ${klass.name}`)
               })
-            })            
+            })          
           } else {
             console.log(`Skipped adding roles to: ${klass.name}`)
           }
         })
+        if(next){next(models)}
       })
 
     })
+  }
 
+  seedClassSpecializations(next){ 
+    const client = blizzard.api.client
+    client.getApplicationToken().then(response => {
+      let accessToken = response.data.access_token
+      let specIndexUrl = `https://us.api.blizzard.com/data/wow/playable-specialization/index?namespace=static-us&locale=en_US&access_token=${accessToken}`
+      axios.get(specIndexUrl).then(response => {
+        let specIds = response.data.character_specializations.map((obj)=>{ return obj.id })
+        specIds.forEach((id)=>{
+          let specUrl = `https://us.api.blizzard.com/data/wow/playable-specialization/${id}?namespace=static-us&locale=en_US&access_token=${accessToken}`
+          axios.get(specUrl).then(response => {
+            CS.exists({name: response.data.name}, (err, result) =>{
+              if(err){return console.log(err)}
+              if (!result){
+                let mediaUrl = `https://us.api.blizzard.com/data/wow/media/playable-specialization/${id}?namespace=static-us&locale=en_US&access_token=${accessToken}`
+                axios.get(mediaUrl).then(res => {
+                  let image = res.data.assets[0].value
+                  let specialization = new CS({name: response.data.name, player_class_id: response.data.playable_class.id, player_class_name: response.data.playable_class.name, image: image})
+                  specialization.save((err, cs)=>{
+                    console.log(`Saved: ${cs.name}`)
+                    if(err) return console.log(err)
+                  })                  
+                })
+              } else {
+                console.log(`Skipped seeding spec: ${response.data.name}`)
+              }
+            })
+          })
+        })
+        if(next){next(cs)}
+      })
+    })
+  }
 
+  associateClassesToSpecs(next){
+    PC.find({}, (err, klasses) =>{
+      klasses.forEach((klass)=>{
+        CS.find({player_class_id: klass.player_class_id}, (err, specs)=>{
+          specs.forEach((c)=>{
+            c.player_class = klass
+            c.save((err)=>{
+              if(err) return console.log(err)
+            })
+          })
+          specs.forEach((c)=>{
+            klass.specs.push(c)
+          })
+          klass.save(err=>{
+            if(err) return console.log(err)
+          })
+        })
+      })
+      if(next) {next(klasses)}
+    })
   }
 
 }
