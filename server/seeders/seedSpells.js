@@ -27,13 +27,28 @@ class SeedSpells{
     let personal = refData.personal
     await this.asyncForEach(external.defensive, async (spell)=>{
       let spellName = spell.split(" ").join("+")
+      console.log("------------")
       console.log(spellName)
       let url = `https://www.wowhead.com/spells/name:${spellName}`
       // console.log(url)
       await page.goto(url)
-      const html = await page.content();
+      let html = await page.content();
       // console.log(html)
-      console.log($('.q-1', html)['0'].attribs.href)
+      let detailUrl = `https://www.wowhead.com${$('.q-1', html)['0'].attribs.href}`
+      // Need the ID from this URl to set img later.
+      console.log(detailUrl)
+      await page.goto(detailUrl)
+      html = await page.content();
+      let className = $('.tinyicontxt', html)['0'].children[0].data
+      let durationStr = $('.grid .first td', html)['0'].children[0].data
+      let cdString = $('.auto-width tbody', html)['0'].children[8].children[3].children[0].data
+      // If undefined, when put into hash check against and return keys for manual auditing.
+      
+      console.log(cdString)
+
+
+
+      
 
 
       // axios.get(url).then((html)=>{
