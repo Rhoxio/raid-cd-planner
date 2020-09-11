@@ -16,9 +16,17 @@ const blizzard = require('./blizzard_api/blizzardBaseApi.js')
 const PC = require("./models/playerClass.js").playerClass
 const CS = require("./models/classSpecialization.js").classSpecialization
 const spellSeeder = require('./seeders/seedSpells.js').seeder
+const ClassSpell = require("./models/classSpell.js").spell
 
-spellSeeder.scrapeWowhead()
+// spellSeeder.scrapeWowhead()
 
+ClassSpell.find({}).exec((err, spells)=>{
+  spells.forEach(spell =>{
+    console.log(spell)
+  })
+})
+
+// Next up is API routes for the front end to consume. 
 
 // const blizzard = require('./blizzard_api/blizzardBaseApi.js')
 // const characterSeeder = require('./seeders/seedClasses.js')
@@ -27,8 +35,8 @@ spellSeeder.scrapeWowhead()
 // console.log(characterSeeder.classSeed.seedClassSpecializations())
 // console.log(characterSeeder.classSeed.seedAll())
 
-// PC.find().populate('specs').exec((err, models)=>{
-//   console.log(models[0].specs[0])
+// CS.find().exec((err, models)=>{
+//   console.log(models)
 // })
 
 const app = express();

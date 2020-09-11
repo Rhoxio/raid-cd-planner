@@ -1,6 +1,6 @@
 {
   "aoe":{
-    "defensive":["Anti-Magic Zone", "Aura Mastery", "Power Word: Barrier", "Spirit Link Totem", "Rallying Cry", "Darkness", "Aegis of Light", "Aura of Sacrifice", "Luminous Barrier", "Earthen Wall Totem", "Demoralizing Shout"],
+    "defensive":["Anti Magic Zone", "Aura Mastery", "Power Word: Barrier", "Spirit Link Totem", "Rallying Cry", "Darkness", "Aegis of Light", "Aura of Sacrifice", "Luminous Barrier", "Earthen Wall Totem", "Demoralizing Shout"],
     "healing": ["Tranquility", "Revival", "Divine Hymn", "Halo", "Divine Star", "Vampiric Embrace", "Spirit Shell", "Divine Hymn", "Healing Tide Totem", "Ancestral Guidance", "Cloudburst Totem", "Aura of Mercy", "Holy Word: Salvation", "Healing Stream Totem"],
     "immunity": [],
     "mobility": ["Stampeding Roar", "Wind Rush Totem", "Demonic Gateway"],
