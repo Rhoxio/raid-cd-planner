@@ -56,27 +56,26 @@ class SeedSpells{
     const parentTypes = [aoe, external, personal]
     const childTypes = ["defensive", "healing", "immunity", "mobility", "cheat_death", "buff"]
 
-
-
     await this.asyncForEach(parentTypes, async (parentType)=>{
+      let parentKey = parentType.parent_key
       await this.asyncForEach(childTypes, async (childType)=>{
         var set = parentType[childType]
         await this.asyncForEach(set, async (spellName)=>{
-          let spellData = new ClassSpell({})
+          let spellData = new ClassSpell({primary_type: parentKey, subtype: childType})
+
           spellData.name = spellName
 
           let spellNameQuery = spellName.split(" ").join("+")
 
-          console.log("------------")
-          console.log(spellNameQuery)
+          // console.log("------------")
+          // console.log(spellNameQuery)
 
-          let url = `https://www.wowhead.com/spells/name:${spellNameQuery}`
+          let url = `https://www.wowhead.com/spells/name:${spellNameQuery}` 
           await page.goto(url)
 
           let html = await page.content();
           let detailUrl = `https://www.wowhead.com${$('.q-1', html)['0'].attribs.href}`
-          let blizzId = detailUrl.split("/")[3].split("=")[1]
-
+          
           await page.goto(detailUrl)
           html = await page.content()
 
@@ -87,21 +86,32 @@ class SeedSpells{
           let durationStr = $('.grid .first td', html)['0'].children[0].data
           let cdString = $('.auto-width tbody', html)['0'].children[8].children[3].children[0].data
 
+          spellData.wowhead_link = detailUrl
           spellData.duration = this.convertToSeconds(durationStr)
           spellData.cooldown = this.convertToSeconds(cdString)
 
+          let blizzId = detailUrl.split("/")[3].split("=")[1]
+          spellData.blizzard_id = parseInt(blizzId)
           await this.retrieveSpellIconUrl(blizzId, (data)=>{
             spellData.image = data
+            // console.log(spellData)
+            ClassSpell.exists({name: spellName}, (err, model)=>{
+              console.log("--------")
+              // console.log(spellName)            
+              if(model){
+                console.log(`Skipped spell: ${spellName}`)
+              } else {
+                spellData.save((err, model)=>{
+                  if(err) return console.log(err)
+                  console.log(`Saved spell: ${spellName}`)
+                  console.log(model)
+                })
+              }
+
+            })            
           })
 
-          ClassSpell.exists({name: spellName}).then((err, models)=>{
-            if(!models){
-              spellData.save((err, model)=>{
-                console.log(model)
-              })
-            }
 
-          })
           
         })          
       })

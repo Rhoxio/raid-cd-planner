@@ -19,6 +19,21 @@ var SpellSchema = new mongoose.Schema({
   spec: { 
     type: Schema.Types.ObjectId, 
     ref: 'ClassSpecialization' 
+  },
+  primary_type: {
+    type: String
+  },
+  subtype: {
+    type: String
+  },
+  wowhead_link:{
+    type: String
+  },
+  blizzard_id:{
+    type: Number
+  },
+  image: {
+    type: String
   }
 })
 

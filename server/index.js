@@ -19,12 +19,18 @@ const spellSeeder = require('./seeders/seedSpells.js').seeder
 const ClassSpell = require("./models/classSpell.js").spell
 
 // spellSeeder.scrapeWowhead()
+// ClassSpell.find({}).exec((err, spells)=>{
+//   console.log(spells)
+//   // spells.forEach(spell =>{
+//   //   console.log(spell)
+//   // })
+// })
 
-ClassSpell.find({}).exec((err, spells)=>{
-  spells.forEach(spell =>{
-    console.log(spell)
-  })
-})
+
+
+// ClassSpell.remove({}, (err, set)=>{
+//   console.log(set)
+// })
 
 // Next up is API routes for the front end to consume. 
 

@@ -5,7 +5,8 @@
     "immunity": [],
     "mobility": ["Stampeding Roar", "Wind Rush Totem", "Demonic Gateway"],
     "cheat_death": [],
-    "buff": ["Heroism", "Bloodlust"]
+    "buff": ["Heroism", "Bloodlust"],
+    "parent_key": "aoe"
   },
   "external":{
     "defensive": ["Ironbark", "Roar of Sacrifice", "Life Cocoon", "Blessing of Sacrifice", "Pain Suppression", "Intervene", "Safeguard"],
@@ -13,7 +14,8 @@
     "immunity": ["Blessing of Protection", "Blessing of Spellwarding"],
     "mobility": ["Tiger's Lust", "Blessing of Freedom", "Angelic Feather", ""],
     "cheat_death": ["Guardian Spirit", "Ancestral Protection Totem"],
-    "buff": []
+    "buff": [],
+    "parent_key": "external"
   },
   "personal":{
     "defensive": ["Icebound Fortitude", "Anti-Magic Shell", "Dancing Rune Weapon", "Vampiric Blood", "Barkskin", "Survival Instincts", "Bristling Fur", "Netherwalk", "Evasion", "Riposte", "Die by the Sword", "Rune Tap", "Tombstone", "Blur", "Desperate Instincts", "Fiery Brand", "Brambles", "Survival of the Fittest", "Survival Instincts", "Ironfur", "Blazing Barrier", "Ice Barrier", "Greater Invisibility", "Prismatic Barrier", "Dampen Harm", "Diffuse Magic", "Fortifying Brew", "Guard", "Ironskin Brew", "Stagger", "Touch of Karma", "Guardian of Ancient Kings", "Dispersion", "Feint", "Astral Shift", "Harden Skin", "Ignore Pain" ],
@@ -21,7 +23,8 @@
     "immunity": ["Aspect of the Turtle", "Ice Block", "Divine Shield", "Cloak of Shadows", "Berserker Rage", "Unending Resolve", "Bladestorm"],
     "mobility":["Death's Advance"],
     "cheat_death": ["Purgatory", "Last Resort", "Ardent Defender", "Cheat Death"],
-    "buff":["Seraphim"]
+    "buff":["Seraphim"],
+    "parent_key": "personal"
   }
   
 }
