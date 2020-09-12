@@ -8,17 +8,20 @@ const ClassSpell = require("../models/classSpell.js").spell
 const specialization = require("../models/classSpecialization.js").classSpecialization
 
 class SeedSpells{
+  // Scraper
   async getReferenceData(){
     let spellLookup = JSON.parse(fs.readFileSync(path.join(__dirname, '../lookups/class_cooldowns.json')));    
     return await spellLookup
   }
 
+  // Scraper
   async asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }  
 
+  // Blizzard API
   async retrieveSpellIconUrl(spellId, next){
     let client = blizzard.api.client
     await client.getApplicationToken().then(res =>{
@@ -31,6 +34,8 @@ class SeedSpells{
     })
   }
 
+  // ClassSpell function
+  // Temporary until I write the validators in.
   removeDuplicates(){
     ClassSpell.find({}).populate("specs").exec((err, spells)=>{
       let i = 0
@@ -47,6 +52,7 @@ class SeedSpells{
     })
   }
 
+  // Scraper
   convertToSeconds(input){
     if(input === undefined) return undefined
     let chunks = input.split(" ")
@@ -59,6 +65,7 @@ class SeedSpells{
     return totalDuration
   }
 
+  // This
   associateSpellsToSpecs(){
     ClassSpell.find({}, (err, spells)=>{
       // console.log(spells)
@@ -83,6 +90,8 @@ class SeedSpells{
       })
     })
   }
+
+  // Scraper
   async scrapeWowhead(){
     // aoe, external, personal
     // defensive, healing, immunity, mobility, cheat_death, buff
@@ -159,8 +168,13 @@ class SeedSpells{
           let blizzId = detailUrl.split("/")[3].split("=")[1]
           spellData.blizzard_id = parseInt(blizzId)
           await this.retrieveSpellIconUrl(blizzId, (data)=>{
-            spellData.image = data
+          spellData.image = data
             // console.log(spellData)
+
+
+            // Everything below here is OK to have in this method.
+            // The variables being set for SpellData are OK too, 
+            // but need to come from a separate place.
             ClassSpell.exists({name: spellName}, (err, model)=>{
               // console.log(spellName)            
               if(model){
@@ -175,8 +189,6 @@ class SeedSpells{
               console.log("--------")
             })            
           })
-
-
           
         })          
       })
