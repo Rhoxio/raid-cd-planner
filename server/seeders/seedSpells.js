@@ -5,6 +5,7 @@ const axios = require('axios');
 const puppeteer = require('puppeteer')
 const blizzard = require('../blizzard_api/blizzardBaseApi.js')
 const ClassSpell = require("../models/classSpell.js").spell
+const specialization = require("../models/classSpecialization.js").classSpecialization
 
 class SeedSpells{
   async getReferenceData(){
@@ -30,6 +31,22 @@ class SeedSpells{
     })
   }
 
+  removeDuplicates(){
+    ClassSpell.find({}).populate("specs").exec((err, spells)=>{
+      let i = 0
+      for (i = 0; i < spells.length; i++){
+        let specs = spells[i].specs  
+        let uniqueChars = specs.filter((c, index) => {
+            return specs.indexOf(c) === index;
+        });
+        spells[i].specs = uniqueChars
+        spells[i].save((err, s)=>{
+          if (err) return console.log(err)
+        })
+      }
+    })
+  }
+
   convertToSeconds(input){
     if(input === undefined) return undefined
     let chunks = input.split(" ")
@@ -42,6 +59,30 @@ class SeedSpells{
     return totalDuration
   }
 
+  associateSpellsToSpecs(){
+    ClassSpell.find({}, (err, spells)=>{
+      // console.log(spells)
+      spells.forEach((spell)=>{
+        specialization.find({player_class_name: spell.player_class_name}, (err, specs)=>{
+          spell.specs = specs
+          spell.save((err, savedSpell)=>{
+            if(err) return console.log(err)
+            console.log(`Associated spec to: ${savedSpell.name}`)
+            specs.forEach((spec)=>{
+              spec.spells.push(spell)
+              spec.save((err, s)=>{
+                if(err) return console.log(err)
+                console.log(`Associated Spell to spec: ${s.name}`)  
+              })
+              
+            })
+          })
+
+
+        })
+      })
+    })
+  }
   async scrapeWowhead(){
     // aoe, external, personal
     // defensive, healing, immunity, mobility, cheat_death, buff
@@ -73,6 +114,7 @@ class SeedSpells{
           let url = `https://www.wowhead.com/spells/name:${spellNameQuery}` 
           await page.goto(url)
 
+
           let html = await page.content();
           let detailUrl = `https://www.wowhead.com${$('.q-1', html)['0'].attribs.href}`
           
@@ -82,7 +124,31 @@ class SeedSpells{
           if(!!$('.tinyicontxt', html)['0']){
             spellData.player_class_name = $('.tinyicontxt', html)['0'].children[0].data
           }
-          
+
+          // spellData.spec_name
+          if($('.wowhead-tooltip-requirements', html)['0']){
+            // console.log($('.wowhead-tooltip-requirements', html)['0'].children[0].data) 
+            let data = $('.wowhead-tooltip-requirements', html)
+            let i = 0
+            // console.log(data)
+            for (i = 0; i < data.length; i++){
+              let nodeData = data[i.toString()]
+              if(nodeData.children.length){
+                nodeData.children.forEach((entry)=>{
+                  if(entry.data.includes(")")){
+                    // Requires Warrior (Protection)
+                    let start = nodeData.children[0].data.indexOf("(")
+                    let end = nodeData.children[0].data.indexOf(")")
+                    let specNames = nodeData.children[0].data.slice(start+1, end).split(",").map( s => s.trim())
+                    specNames.forEach((spec)=>{
+                      spellData.spec_names.push(spec)
+                    })
+                  }
+                })
+              }
+            }
+          }
+           
           let durationStr = $('.grid .first td', html)['0'].children[0].data
           let cdString = $('.auto-width tbody', html)['0'].children[8].children[3].children[0].data
 
@@ -96,7 +162,6 @@ class SeedSpells{
             spellData.image = data
             // console.log(spellData)
             ClassSpell.exists({name: spellName}, (err, model)=>{
-              console.log("--------")
               // console.log(spellName)            
               if(model){
                 console.log(`Skipped spell: ${spellName}`)
@@ -107,7 +172,7 @@ class SeedSpells{
                   console.log(model)
                 })
               }
-
+              console.log("--------")
             })            
           })
 
@@ -117,7 +182,6 @@ class SeedSpells{
       })
     })
 
-  
     browser.close()
     console.log("Spells finished seeding!")
     

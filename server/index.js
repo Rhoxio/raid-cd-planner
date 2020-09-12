@@ -19,14 +19,12 @@ const spellSeeder = require('./seeders/seedSpells.js').seeder
 const ClassSpell = require("./models/classSpell.js").spell
 
 // spellSeeder.scrapeWowhead()
-// ClassSpell.find({}).exec((err, spells)=>{
-//   console.log(spells)
-//   // spells.forEach(spell =>{
-//   //   console.log(spell)
-//   // })
+// spellSeeder.associateSpellsToSpecs()
+// CS.find({}).populate("spells").exec((err, spells)=>{
+//   spells.forEach((spell)=>{
+//     console.log(spell)
+//   })
 // })
-
-
 
 // ClassSpell.remove({}, (err, set)=>{
 //   console.log(set)

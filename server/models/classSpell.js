@@ -16,10 +16,8 @@ var SpellSchema = new mongoose.Schema({
   cooldown: {
     type: Number
   },
-  spec: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'ClassSpecialization' 
-  },
+  specs: [{ type: Schema.Types.ObjectId, ref: 'ClassSpecialization' }],
+  spec_names: Array,
   primary_type: {
     type: String
   },
