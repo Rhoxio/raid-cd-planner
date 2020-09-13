@@ -18,7 +18,8 @@ const CS = require("./models/classSpecialization.js").classSpecialization
 const spellSeeder = require('./seeders/seedSpells.js').seeder
 const ClassSpell = require("./models/classSpell.js").spell
 
-// spellSeeder.scrapeWowhead()
+spellSeeder.scrapeWowhead()
+
 // spellSeeder.associateSpellsToSpecs()
 // CS.find({}).populate("spells").exec((err, spells)=>{
 //   spells.forEach((spell)=>{
