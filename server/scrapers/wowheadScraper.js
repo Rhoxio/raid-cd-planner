@@ -68,6 +68,29 @@ class WowheadScraper {
     return this.convertToSeconds(cooldown)
   }
 
+  extractSpecName(html){
+    if($('.wowhead-tooltip-requirements', html)['0']){   
+     let data = $('.wowhead-tooltip-requirements', html) 
+     let specNames = []
+     let i = 0 
+     for (i = 0; i < data.length; i++){  
+       let nodeData = data[i.toString()] 
+       if(nodeData.children.length){ 
+         nodeData.children.forEach((entry)=>{  
+           if(entry.data.includes(")")){ 
+             // Requires Warrior (Protection)  
+             let start = nodeData.children[0].data.indexOf("(")  
+             let end = nodeData.children[0].data.indexOf(")")  
+             let names = nodeData.children[0].data.slice(start+1, end).split(",").map( s => s.trim())
+             specNames = names  
+           } 
+         })  
+       } 
+     }
+     return specNames 
+    }     
+  }
+
   spellDetailUrl(html){
     let chunk = $('.q-1', html)['0'].attribs.href
     if(chunk != undefined){

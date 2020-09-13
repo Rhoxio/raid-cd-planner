@@ -54,8 +54,6 @@ class SeedSpells{
               
             })
           })
-
-
         })
       })
     })
@@ -102,9 +100,9 @@ class SeedSpells{
           spellData.cooldown = cooldown
           spellData.blizzard_id = blizzId
           spellData.image = iconUrl
+          spellData.spec_names = scraper.extractSpecName(detailPageHtml)
 
-          ClassSpell.exists({name: spellName, blizzard_id: blizzId}, (err, model)=>{
-            // console.log(spellName)            
+          ClassSpell.exists({name: spellName, blizzard_id: blizzId}, (err, model)=>{          
             if(model){
               console.log(`Skipped spell: ${spellName}`)
             } else {
@@ -116,14 +114,6 @@ class SeedSpells{
             }
             console.log("--------")
           })          
-
-
-
-          //   // Everything below here is OK to have in this method.
-          //   // The variables being set for SpellData are OK too, 
-          //   // but need to come from a separate place.
-            
-          // })
           
         })          
       })
