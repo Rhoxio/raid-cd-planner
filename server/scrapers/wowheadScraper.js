@@ -95,8 +95,6 @@ class WowheadScraper {
     let chunk = $('.q-1', html)['0'].attribs.href
     if(chunk != undefined){
       return `https://www.wowhead.com${chunk}`  
-    } else {
-      return false
     }
   }
 

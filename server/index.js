@@ -18,17 +18,41 @@ const CS = require("./models/classSpecialization.js").classSpecialization
 const spellSeeder = require('./seeders/seedSpells.js').seeder
 const ClassSpell = require("./models/classSpell.js").spell
 
-// spellSeeder.scrapeWowhead()
 
+const specRoutes = require("./routes/api").specs
+
+
+// spellSeeder.seedSpells()
 // spellSeeder.associateSpellsToSpecs()
-// CS.find({}).populate("spells").exec((err, spells)=>{
-//   spells.forEach((spell)=>{
-//     console.log(spell)
+// CS.find({}).populate("spells").exec((err, specs)=>{
+//   specs.forEach((spec)=>{
+//     console.log(spec.name)
+//     spec.spells.forEach((spell)=>{
+//       console.log(spell)
+//     })
+//     console.log("--------")
 //   })
 // })
 
-// ClassSpell.remove({}, (err, set)=>{
-//   console.log(set)
+// ClassSpell.find({}).exec((err, spells)=>{
+//   spells.forEach(spell=>{
+//     console.log(spell)
+//     spell.specs = []
+//     spell.save((err, spell)=>{
+//       if(err) console.log(err)
+//       console.log(spell)
+//     })
+//   })
+// })
+
+// CS.find({}, (err, specs)=>{
+//   // console.log(specs)
+//   specs.forEach(spec=>{
+//     spec.spells = []
+//     spec.save((err, spec)=>{
+//       console.log(spec)
+//     })
+//   })
 // })
 
 // Next up is API routes for the front end to consume. 
@@ -47,6 +71,7 @@ const ClassSpell = require("./models/classSpell.js").spell
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
+app.use('/api', specRoutes)
 
 app.get('/home', (req, res) => {
   const name = req.query.name || 'World';
