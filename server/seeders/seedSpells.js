@@ -40,27 +40,48 @@ class SeedSpells{
     ClassSpell.find({}, (err, spells)=>{
       // console.log(spells)
       spells.forEach((spell)=>{
-        specialization.find({player_class_name: spell.player_class_name}, (err, specs)=>{
-          spell.specs = specs
-          spell.save((err, savedSpell)=>{
-            if(err) return console.log(err)
-            console.log(`Associated spec to: ${savedSpell.name}`)
-            specs.forEach((spec)=>{
-              spec.spells.push(spell)
-              spec.save((err, s)=>{
+        specialization.find({player_class_name: spell.player_class_name, name: spell.spec_names}, (err, foundSpecs)=>{
+
+          if(foundSpecs.length === 0){
+            // If theres a spell that doesnt have any results, associate to it anyway. 
+            specialization.find({player_class_name: spell.player_class_name}, (err, specs)=>{
+              spell.specs = specs
+              spell.save((err, savedSpell)=>{
                 if(err) return console.log(err)
-                console.log(`Associated Spell to spec: ${s.name}`)  
-              })
-              
+                console.log(`Associated spec to: ${savedSpell.name}`)
+                specs.forEach((spec)=>{
+                  spec.spells.push(spell)
+                  spec.save((err, s)=>{
+                    if(err) return console.log(err)
+                    console.log(`Associated Spell to spec: ${s.name}`)  
+                  })
+                  
+                })
+              })              
             })
-          })
+
+          } else {
+            spell.specs = foundSpecs  
+            spell.save((err, savedSpell)=>{
+              if(err) return console.log(err)
+              console.log(`Associated spec to: ${savedSpell.name}`)
+              foundSpecs.forEach((spec)=>{
+                spec.spells.push(spell)
+                spec.save((err, s)=>{
+                  if(err) return console.log(err)
+                  console.log(`Associated Spell to spec: ${s.name}`)  
+                })
+                
+              })
+            })
+          }
         })
       })
     })
   }
 
   // Scraper
-  async scrapeWowhead(){
+  async seedSpells(){
     // aoe, external, personal
     // defensive, healing, immunity, mobility, cheat_death, buff
 
@@ -89,18 +110,15 @@ class SeedSpells{
           let detailPageHtml = await scraper.spellDetailPage(spellNameQuery)
           let detailUrl = scraper.spellDetailUrl(await scraper.spellSearchPage(spellName))
 
-          let wowhead_link = detailUrl
-          let duration = scraper.extractDuration(detailPageHtml)
-          let cooldown = scraper.extractCooldown(detailPageHtml)
           let blizzId = parseInt(detailUrl.split("/")[3].split("=")[1])
-          let iconUrl = await blizzard.retrieveSpellIconUrl(blizzId)
 
-          spellData.wowhead_link = wowhead_link
-          spellData.duration = duration
-          spellData.cooldown = cooldown
+          spellData.wowhead_link = detailUrl
+          spellData.duration = scraper.extractDuration(detailPageHtml)
+          spellData.cooldown = scraper.extractCooldown(detailPageHtml)
           spellData.blizzard_id = blizzId
-          spellData.image = iconUrl
+          spellData.image = await blizzard.retrieveSpellIconUrl(blizzId)
           spellData.spec_names = scraper.extractSpecName(detailPageHtml)
+          spellData.player_class_name = scraper.extractPlayerClassName(detailPageHtml)
 
           ClassSpell.exists({name: spellName, blizzard_id: blizzId}, (err, model)=>{          
             if(model){
