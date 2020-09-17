@@ -1,35 +1,42 @@
 const express = require('express'),
     specRouter = express.Router(),
-    specialization = require("../models/classSpecialization.js").classSpecialization
-
-// Retrieve single
-
-// Need to pull this logic out into controller logic specifically.
-// Single responsibility per set of behavioral delegation... pulling shit out into other files at the very least.
+    playerClassRouter = express.Router(),
+    spellRouter = express.Router(),
+    specialization = require("../models/classSpecialization.js").classSpecialization,
+    specController = require("../controllers/specializationController").controller,
+    playerClassController = require("../controllers/playerClassController").controller,
+    spellController = require("../controllers/spellController").controller
 
 specRouter.get('/spec/:id', (req, res)=>{
-  let id = req.params.id
-  specialization.find({_id: id}).exec((err, spec)=>{
-    if(err) {
-      console.log(err)
-      return res.status(400).send()
-    }
-    res.json(spec)
-  })
+  specController.byId(req, res)
 })
 
 // All Specs
 specRouter.get('/specs', (req, res)=>{
-  specialization.find({}).exec((err, specs)=>{
-    if(err) {
-      console.log(err)
-      return res.status(400).send()
-    }
-    res.json(specs)
-  })
+  specController.all(req, res)
 })
 
-module.exports = { specs: specRouter }
+playerClassRouter.get('/playerclass/:id', (req, res)=>{
+  playerClassController.byId(req, res)
+})
+
+playerClassRouter.get('/playerclasses', (req, res)=>{
+  playerClassController.all(req, res)
+})
+
+spellRouter.get('/spell/:id', (req, res)=>{
+  spellController.byId(req, res)
+})
+
+spellRouter.get('/spells', (req, res)=>{
+  spellController.all(req, res)
+})
+
+module.exports = { 
+  specs: specRouter, 
+  playerClass: playerClassRouter,
+  spells: spellRouter
+}
 
 
 

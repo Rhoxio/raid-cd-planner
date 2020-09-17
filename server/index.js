@@ -18,8 +18,9 @@ const CS = require("./models/classSpecialization.js").classSpecialization
 const spellSeeder = require('./seeders/seedSpells.js').seeder
 const ClassSpell = require("./models/classSpell.js").spell
 
-
 const specRoutes = require("./routes/api").specs
+const playerClassRoutes = require("./routes/api").playerClass
+const spellRoutes = require("./routes/api").spells
 
 
 // spellSeeder.seedSpells()
@@ -72,6 +73,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
 app.use('/api', specRoutes)
+app.use('/api', playerClassRoutes)
+app.use('/api', spellRoutes)
 
 app.get('/home', (req, res) => {
   const name = req.query.name || 'World';
