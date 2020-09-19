@@ -21,7 +21,7 @@ const ClassSpell = require("./models/classSpell.js").spell
 const specRoutes = require("./routes/api").specs
 const playerClassRoutes = require("./routes/api").playerClass
 const spellRoutes = require("./routes/api").spells
-
+const indexRoutes = require("./routes/index").router
 
 // spellSeeder.seedSpells()
 // spellSeeder.associateSpellsToSpecs()
@@ -72,14 +72,18 @@ const spellRoutes = require("./routes/api").spells
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
+
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
+
+app.use('/', indexRoutes)
 app.use('/api', specRoutes)
 app.use('/api', playerClassRoutes)
 app.use('/api', spellRoutes)
 
 app.get('/home', (req, res) => {
-  const name = req.query.name || 'World';
-  res.setHeader('Content-Type', 'application/json');
-  res.send("<h1>Hi!</h1>");
+  res.render('../views/index.html');
 });
 
 app.listen(3001, () =>

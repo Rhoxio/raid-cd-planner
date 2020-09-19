@@ -1,25 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Timeline from 'react-visjs-timeline'
 
 function App() {
+  const options = {
+    width: '100%',
+    height: '60px',
+    stack: false,
+    showMajorLabels: true,
+    showCurrentTime: true,
+    zoomMin: 1000000,
+    type: 'background',
+    format: {
+      minorLabels: {
+        minute: 'h:mma',
+        hour: 'ha'
+      }
+    }
+  }
+
+  const items = [{
+    start: new Date(2010, 7, 15),
+    end: new Date(2010, 8, 2),  // end is optional
+    content: 'Trajectory A',
+  }]  
+
+
+  const groups = [{
+    id: 1,
+    content: 'Group A',
+  }]
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Timeline 
+    options={options} 
+    items={items}
+    groups={groups}
+    />
   );
 }
 
