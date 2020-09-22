@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Timeline | Drag & Drop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+
+<body>
+    <h1>Timeline Drag & Drop Example</h1>
+    <p>Adapted from <a href="http://visjs.org/" target="_blank" title="visjs.org">Timeline vis.js examples</a>.<br>Here, you will have to define your own <code>'dragstart'</code>  eventListener on each element of your list of elements but also your own <code>'dragend'</code> eventListener in order to recover the item properties after the end of the drag.</p>
+    <div id="mytimeline"></div>
+    <div class='items-panel'>
+        <div class='side' style="max-width:350px;overflow:auto">
+            <h3>Last item just been dragged on timeline:</h3>
+            <pre id="output"></pre>
+        </div>
+        <div class='side'>
+            <h3>Items:</h3>
+            <ul class="items">
+                <li draggable="true" class="item">
+                    item 1 - box
+                </li>
+                <li draggable="true" class="item">
+                    item 2 - point
+                </li>
+                <li draggable="true" class="item">
+                    item 3 - range
+                </li>
+                <li draggable="true" class="item">
+                    item 3 - range - fixed times -
+                    <br> (start: now, end: now + 10 min)
+                </li>
+            </ul>
+        </div>
+        <div class='side'>
+            <h3>Object with "target:'item'":</h3>
+            <li draggable="true" class="object-item">
+                object with target:'item'
+            </li>
+        </div>
+    </div>
+</body>
+
+</html>
