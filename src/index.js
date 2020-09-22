@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+// import CooldownTimeline from './components/cooldownTimeline';
+import ClassForm from './components/classForm'
+import CooldownTimeline from './components/cooldownTimeline';
+import Moment from 'moment';
+import vis from 'vis';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// console.log()
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <CooldownTimeline />,
   document.getElementById('root')
 );
 
