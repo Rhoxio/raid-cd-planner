@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Timeline from 'react-visjs-timeline'
 import ClassForm from './classForm';
 import Moment from 'moment';
-import vis from 'vis';
 import $ from 'jquery'
 
 class CooldownTimeline extends React.Component {
@@ -68,20 +67,26 @@ class CooldownTimeline extends React.Component {
 
   }
 
-  setTimelineItems(items){
+  setTimelineItems(){
     this.timelineRef.current.$el.setItems(this.state.items);
   }
 
   removeItem(removedItem){
+    // UI removal logic is handled in onRemove function in options.
     this.setState({items: this.state.items.filter(function(item) { 
         return removedItem.id !== item.id 
     })});
   }
 
+  // !!!!!!!!!!!
+  // Will probably need to set up cb in options for
+  // when items are moved around on the timeline and be sure that they
+  // are updated in the state here.
+
   appendItem(){
     let newItem = {
       start: this.state.startDate,
-      end: Moment(this.state.endDate).subtract(9, 'm').toDate(),  // end is optional
+      end: Moment(this.state.endDate).subtract(9, 'm').toDate(),
       content: 'Earthen Wall Totem',
       editable: true, 
       id: 2,
@@ -92,12 +97,11 @@ class CooldownTimeline extends React.Component {
     items.push(newItem)
 
     this.setState({items: items }, ()=>{
-      this.setTimelineItems(items)  
+      this.setTimelineItems()  
     }) 
   }
 
   render(props){
-    // this.bindDeletionEvents()
     return <div className='timeline-container'>
     <ClassForm appendItem={this.appendItem.bind(this)} />
     <Timeline 

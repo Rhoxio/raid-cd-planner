@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import CooldownTimeline from './components/cooldownTimeline';
 import ClassForm from './components/classForm'
 import CooldownTimeline from './components/cooldownTimeline';
 import Moment from 'moment';
