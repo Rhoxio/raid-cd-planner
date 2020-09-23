@@ -52,7 +52,7 @@ class CooldownTimeline extends React.Component {
     }
     this.state.items = [{
       start: this.state.startDate,
-      end: Moment(this.state.endDate).subtract(9, 'm').toDate(),  // end is optional
+      end: Moment(this.state.endDate).subtract(9, 'm').toDate(),
       content: 'Spirit Link Totem',
       min: this.state.startDate,
       max: this.state.endDate,      
