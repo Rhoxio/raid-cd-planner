@@ -21,10 +21,14 @@ class CooldownTimeline extends React.Component {
       editable: true,
       onRemove: ((item, cb)=>{
         let check = window.confirm(`Delete ${item.content}?`)
-        if(check == true){
+        if(check === true){
           this.removeItem(item)
           cb(item)          
         }
+      }),
+      onMove: ((item, cb)=>{
+        this.updateItem(item)
+        cb(item)
       }),
       align: 'range',
       showMajorLabels: false,
@@ -71,6 +75,12 @@ class CooldownTimeline extends React.Component {
     this.timelineRef.current.$el.setItems(this.state.items);
   }
 
+  addItem(itemToAdd){
+    let items = this.state.items
+    items.push(itemToAdd)
+    this.setState({items:items})
+  }
+
   removeItem(removedItem){
     // UI removal logic is handled in onRemove function in options.
     this.setState({items: this.state.items.filter(function(item) { 
@@ -78,10 +88,10 @@ class CooldownTimeline extends React.Component {
     })});
   }
 
-  // !!!!!!!!!!!
-  // Will probably need to set up cb in options for
-  // when items are moved around on the timeline and be sure that they
-  // are updated in the state here.
+  updateItem(itemToUpdate){
+    this.removeItem(itemToUpdate)
+    this.addItem(itemToUpdate)
+  }
 
   appendItem(){
     let newItem = {
@@ -101,7 +111,7 @@ class CooldownTimeline extends React.Component {
     }) 
   }
 
-  render(props){
+  render(){
     return <div className='timeline-container'>
     <ClassForm appendItem={this.appendItem.bind(this)} />
     <Timeline 
