@@ -3,12 +3,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Timeline from 'react-visjs-timeline'
 import ClassForm from './classForm';
 import Moment from 'moment';
-import $ from 'jquery'
 
 class CooldownTimeline extends React.Component {
   constructor(){
     super()
     this.timelineRef = React.createRef()
+
+    // I think this should be an incremembting number due to the fact that
+    // there's no other great way of handing this with reference data. There would
+    // be collisions otherwise.
+    this.currentItemIndex = 0
 
     this.state = {}
     this.state.startDate = new Date(0)
@@ -54,6 +58,7 @@ class CooldownTimeline extends React.Component {
         range: true,
       },
     }
+
     this.state.items = [{
       start: this.state.startDate,
       end: Moment(this.state.endDate).subtract(9, 'm').toDate(),
@@ -61,14 +66,23 @@ class CooldownTimeline extends React.Component {
       min: this.state.startDate,
       max: this.state.endDate,      
       editable: true, 
-      id: 1,
+      id: 0,
       group: 'shaman'
-    }]  
+    }]
+
+    for(var i = 0; i < this.state.items.length ; i++){
+      this.cycleItemIndex()
+    }
+
     this.state.groups = [{
       id: 'shaman',
       content: 'Shaman',
     }]
 
+  }
+
+  cycleItemIndex(){
+    this.currentItemIndex += 1
   }
 
   setTimelineItems(){
@@ -99,7 +113,7 @@ class CooldownTimeline extends React.Component {
       end: Moment(this.state.endDate).subtract(9, 'm').toDate(),
       content: 'Earthen Wall Totem',
       editable: true, 
-      id: 2,
+      id: this.currentItemIndex,
       group: 'shaman'
     }
 
@@ -108,10 +122,20 @@ class CooldownTimeline extends React.Component {
 
     this.setState({items: items }, ()=>{
       this.setTimelineItems()  
+      this.cycleItemIndex()
     }) 
+   
   }
 
   render(){
+    let opts = {
+      name: 'Earthen Wall Totem',
+      editable: true, 
+      id: this.currentItemIndex,
+      group: 'shaman'
+    }
+
+    // console.log(new TimelineItem(this.start, opts).timelineData())
     return <div className='timeline-container'>
     <ClassForm appendItem={this.appendItem.bind(this)} />
     <Timeline 
