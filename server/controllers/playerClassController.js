@@ -13,12 +13,13 @@ const playerClassController = {
   },
 
   all(req, res){
-    playerClass.find({}).exec((err, klass)=>{
+    playerClass.find({}).exec((err, pcs)=>{
       if(err) {
         console.log(err)
         return res.status(400).send()
       }
-      res.json(klass)
+      pcs.map((pc)=>{pc.name = pc.name.split(" ").join("-"); pc;})
+      res.json(pcs)
     })
   }
 }

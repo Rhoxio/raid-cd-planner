@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const assert = require('assert');
+const cors = require('cors')
 
 const mongoose = require('mongoose');
 const db = mongoose.connection;
@@ -76,6 +77,8 @@ app.use(pino);
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
+
+app.use(cors())
 
 app.use('/', indexRoutes)
 app.use('/api', specRoutes)
