@@ -13,10 +13,8 @@ const spellController = {
   },
 
   all(req, res){
-    console.log(req.query)
     let query = {}
     if(req.query.player_class){
-      // Given query must be URL encoded.
       query.player_class_name = req.query.player_class.split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ")
     }
     spell.find(query).exec((err, spells)=>{
